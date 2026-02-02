@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine Gallery</title>
+  <style>
+    body {
+      background: #ffe6e6;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      max-width: 1200px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .flip-box {
+      background-color: transparent;
+      width: 100%;
+      height: 240px; /* increased ~30% */
+      perspective: 1000px;
+    }
+    .flip-box-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    .flip-box:hover .flip-box-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-box-front, .flip-box-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .flip-box-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .flip-box-back {
+      background-color: #ffcccc;
+      color: #b30000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transform: rotateY(180deg);
+      padding: 10px;
+    }
+    .message-box {
+      background: #ffcccc;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 22px;
+      color: #b30000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+	.video-box video {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .back-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background: #e60000;
+    }
+	    .letter-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .letter-button:hover {
+      background: #e60000;
+    }
+	/* Falling hearts */
+    .falling-heart {
+      position: absolute;
+      top: -50px;
+      font-size: 30px;
+      color: red;
+      animation: fall linear forwards;
+      pointer-events: none; /* hearts won't block clicks */
+      z-index: 1; /* behind card and photos */
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+	/* Music toggle button fixed bottom-right */
+    #musicToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      font-size: 16px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 5;
+    }
+    #musicToggle:hover {
+      background: #e60000;
+    }
+	.letter-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .letter-button:hover {
+      background: #e60000;
+
+
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- Main box with 16 flip pictures -->
+    <div class="gallery">
+      <!-- Example flip boxes -->
+      <div class="flip-box">
+        <div class="flip-box-inner">
+          <div class="flip-box-front">
+            <img src="pic1.jpg" alt="Picture 1">
+          </div>
+          <div class="flip-box-back">First meet up <br> 08.28.2025</br><br>❤</br></div>
+        </div>
+      </div>
+      <div class="flip-box">
+        <div class="flip-box-inner">
+          <div class="flip-box-front">
+            <img src="pic2.jpg" alt="Picture 2">
+          </div>
+          <div class="flip-box-back">First asian cusine<br>09.01.2025</br><br>🍫</br></div>
+        </div>
+      </div>
+      <!-- Repeat until 16 pictures -->
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic3.jpg"></div><div class="flip-box-back">First visit in taguig<br>09.25.2025</br><br>🌹</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic4.jpg"></div><div class="flip-box-back">First day of being a Boyfriend/Girlfriend<br>09.29.2025</br><br>💘</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic5.jpg"></div><div class="flip-box-back">First time switching jackets<br>10.01.2025</br><br>💞</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic6.jpg"></div><div class="flip-box-back">First time celebrating your birthday<br>10.09.2025</br> <br>💕</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic7.jpg"></div><div class="flip-box-back">First time giving eachother jackets<br>10.13.2025</br><br>💝</br>  </div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic8.jpg"></div><div class="flip-box-back">First time in delos reyes<br>10.16.2025</br><br>💐</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic9.jpg"></div><div class="flip-box-back">First time photobooth<br>10.23.2025</br><br>🎁</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic10.jpg"></div><div class="flip-box-back">First time recreating our first picture<br>10.30.2025</br><br>😘</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic11.jpg"></div><div class="flip-box-back">First picture of november  <br>11.13.2025</br><br>❤</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic12.jpg"></div><div class="flip-box-back">First time in your friends birthday<br>11.23.2025</br><br>🌹</br> </div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic13.jpg"></div><div class="flip-box-back">First time you gave me a sketch of myself<br>12.04.2025</br><br>💓</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic14.jpg"></div><div class="flip-box-back">Our last picture of 2025<br>12.16.2025</br><br>❤</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic15.jpg"></div><div class="flip-box-back">First picture of 2026<br>01.10.2026</br><br>💖</br></div></div></div>
+      <div class="flip-box"><div class="flip-box-inner"><div class="flip-box-front"><img src="pic16.jpg"></div><div class="flip-box-back">Our first cafe in 2026<br>01.21.2026</br><br>🥰</br></div></div></div>
+    </div>
+
+    <!-- Message box -->
+    <div class="message-box">
+      Happy Valentine’s Day!   
+      <br>These are my favorite pictures so far, each one a reminder of how deeply I cherish you.</br>
+    </div>
+
+    <!-- Video box -->
+    <div class="video-box">
+      <h2>Moments with you that keep replaying in my heart.</h2>
+      <video controls>
+        <source src="Video1.mkv" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Back button -->
+    <button class="back-button" onclick="window.location.href='homepage.html'">Back to Home</button>
+	
+	<!-- Back button -->
+    <button class="letter-button" onclick="window.location.href='letter.html'">Proceed to letter</button>
+	
+	<!-- Background Music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="looper2.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Music Toggle Button -->
+  <button id="musicToggle" onclick="toggleMusic()">🔊 Toggle Music</button>
+
+	<script>
+     // Falling hearts logic
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("falling-heart");
+      heart.innerText = "❤️";
+
+      // Random horizontal position
+      heart.style.left = Math.random() * window.innerWidth + "px";
+
+      // Random animation duration
+      const duration = 3 + Math.random() * 5;
+      heart.style.animationDuration = duration + "s";
+
+      document.body.appendChild(heart);
+
+      // Remove heart after animation
+      setTimeout(() => {
+        heart.remove();
+      }, duration * 1000);
+    }
+
+    // Create hearts continuously
+    setInterval(createHeart, 500);
+	// Music toggle
+    function toggleMusic() {
+      const music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+	}
+	
+	// Pause music when video plays, resume when paused or ended
+    const video = document.getElementById("valentineVideo");
+    const music = document.getElementById("bgMusic");
+
+    video.addEventListener("play", () => {
+      music.pause();
+    });
+    video.addEventListener("pause", () => {
+      music.play();
+    });
+    video.addEventListener("ended", () => {
+      music.play();
+    });
+  </script>
+
+	
+  </div>
+</body>
+</html>

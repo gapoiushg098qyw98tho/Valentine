@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine Home</title>
+  <style>
+    body {
+      background: #ffe6e6;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 50px;
+      position: relative;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 2;
+      display: none; /* hidden until password is correct */
+    }
+    .heart {
+      font-size: 100px;
+      color: red;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .message {
+      font-size: 24px;
+      color: #b30000;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e60000;
+    }
+
+    /* Floating + draggable photos */
+    .draggable-photo {
+      position: absolute;
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: grab;
+      animation: float 6s ease-in-out infinite;
+    }
+    .draggable-photo:active {
+      cursor: grabbing;
+    }
+    @keyframes float {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(10px, -15px); }
+      50%  { transform: translate(0, -30px); }
+      75%  { transform: translate(-10px, -15px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* Falling hearts */
+    .falling-heart {
+      position: absolute;
+      top: -50px;
+      font-size: 30px;
+      color: red;
+      animation: fall linear forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Password box */
+    .password-box {
+      background: #fff0f0;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: inline-block;
+    }
+    .password-box input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .password-box button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .password-box button:hover {
+      background: #e60000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating + draggable photos -->
+  <img src="float1.png" class="draggable-photo" style="top:80px; left:20px; animation-delay:0s;">
+  <img src="float2.png" class="draggable-photo" style="top:120px; right:20px; animation-delay:1s;">
+  <img src="float3.png" class="draggable-photo" style="top:250px; left:40px; animation-delay:2s;">
+  <img src="float4.png" class="draggable-photo" style="top:300px; right:40px; animation-delay:3s;">
+  <img src="float5.png" class="draggable-photo" style="top:450px; left:60px; animation-delay:4s;">
+  <img src="float6.png" class="draggable-photo" style="top:500px; right:60px; animation-delay:5s;">
+  <img src="float7.png" class="draggable-photo" style="top:550px; left:80px; animation-delay:6s;">
+
+  <!-- Password box -->
+  <div class="password-box" id="passwordBox">
+    <p>Enter your birthday (MMDD):</p>
+    <input type="text" id="birthdayInput" placeholder="e.g 0111">
+    <button onclick="checkPassword()">Submit</button>
+  </div>
+
+  <!-- Main Valentine Card (hidden until correct password) -->
+  <div class="card" id="valentineCard">
+    <div class="heart">❤️</div>
+    <div class="message">Happy Valentine’s Day ABI!<br>I LOVE YOU</br></div>
+    <button onclick="window.location.href='gallery.html'">Open Gift</button>
+  </div>
+
+  <script>
+    // Draggable photo logic
+    const photos = document.querySelectorAll('.draggable-photo');
+    let currentPhoto = null;
+    let offsetX = 0, offsetY = 0;
+
+    photos.forEach(photo => {
+      photo.addEventListener('mousedown', (e) => {
+        currentPhoto = photo;
+        offsetX = e.clientX - photo.offsetLeft;
+        offsetY = e.clientY - photo.offsetTop;
+        photo.style.zIndex = 3;
+        photo.style.animationPlayState = 'paused';
+      });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (currentPhoto) {
+        currentPhoto.style.left = (e.clientX - offsetX) + 'px';
+        currentPhoto.style.top = (e.clientY - offsetY) + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (currentPhoto) {
+        currentPhoto.style.zIndex = 1;
+        currentPhoto.style.animationPlayState = 'running';
+        currentPhoto = null;
+      }
+    });
+
+    // Falling hearts logic
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("falling-heart");
+      heart.innerText = "❤️";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      const duration = 3 + Math.random() * 5;
+      heart.style.animationDuration = duration + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => { heart.remove(); }, duration * 1000);
+    }
+    setInterval(createHeart, 500);
+
+    // Password system
+    function checkPassword() {
+      const input = document.getElementById("birthdayInput").value;
+      const correctPassword = "1009"; // <-- set the correct birthday here (MMDD)
+      if (input === correctPassword) {
+        document.getElementById("valentineCard").style.display = "inline-block";
+        document.getElementById("passwordBox").style.display = "none";
+        document.getElementById("musicToggle").style.display = "block";
+        // Start background music immediately
+        const music = document.getElementById("bgMusic");
+        music.play();
+      } else {
+        alert("Incorrect birthday! Try again.");
+      }
+    }
+  </script>
+</body>
+</html>

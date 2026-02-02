@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine letter</title>
+  <style>
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap");
+
+:root {
+  --envelope-x: 300px;
+  --envelope-y: 200px;
+  --envelope-bg: Moccasin;
+  --envelope-shadow: Peru;
+  --letter-x: 250px;
+  --letter-y: calc(250px - 1rem - 10px);
+  --letter-bg: AntiqueWhite;
+  --letter-shadow: BurlyWood;
+  --letter-text: #180d07;
+  --letter-font: "Dancing Script", serif;
+  --letter-button-text: darkred;
+  --heart-bg: darkred;
+  --heart-text: white;
+}
+
+@media (min-width: 650px) {
+  :root {
+    --envelope-x: 600px;
+    --envelope-y: 400px;
+    --letter-x: 500px;
+    --letter-y: calc(400px - 1rem - 10px);
+  }
+}
+html {
+  font-size: 20px;
+}
+body {
+  background-color: #ffe6e6;
+}
+
+.cssletter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 24dvh 0;
+}
+
+.envelope {
+  position: relative;
+  width: var(--envelope-x);
+  height: var(--envelope-y);
+  background: var(--envelope-bg);
+  box-shadow: inset 0 0 30px -5px var(--envelope-shadow), 0 0 50vw 0 #540000;
+}
+
+.envelope::before {
+  content: "˚ʚ❤︎ɞ˚";
+  font-size: 5rem;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: soft-light;
+}
+
+.envelope-flap {
+  width: 100%;
+  height: 71%;
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  overflow: hidden;
+  transition: 0.6s linear all;
+  transform-origin: top;
+  pointer-events: all;
+}
+
+.envelope-folds {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.envelope-flap::before,
+.envelope-left::before,
+.envelope-right::before,
+.envelope-bottom::before {
+  content: "";
+  transform: rotate(45deg);
+  background: var(--envelope-bg);
+  box-shadow: 0 0 30px -5px var(--envelope-shadow);
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  position: absolute;
+  top: 60%;
+}
+
+.envelope-flap::before {
+  border-radius: 5rem;
+  bottom: 30px;
+  border-radius: 5rem;
+  top: auto;
+}
+
+@media (min-width: 650px) {
+  .envelope-flap::before {
+    bottom: 100px;
+  }
+}
+
+.envelope-left::before {
+  top: 10%;
+  left: -65%;
+}
+
+.envelope-right::before {
+  top: 10%;
+  right: -65%;
+}
+
+.envelope-bottom::before {
+  top: 60%;
+  border-radius: 5rem;
+}
+
+.heart {
+  z-index: 4;
+  position: relative;
+  box-shadow: none;
+  border: none;
+  width: 70px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 60% 65%, var(--heart-bg) 64%, #0000 65%)
+      top left/50% 50%,
+    radial-gradient(circle at 40% 65%, var(--heart-bg) 64%, #0000 65%) top
+      right/50% 50%,
+    conic-gradient(from -45deg at 50% 85.5%, var(--heart-bg) 90deg, #0000 0)
+      bottom/100% 50%;
+  background-repeat: no-repeat;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+@media (min-width: 650px) {
+  .heart {
+    width: 150px;
+  }
+}
+
+.heart::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 70px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 60% 65%, #ffffff26 64%, #0000 65%) top
+      left/50% 50%,
+    radial-gradient(circle at 40% 65%, #ffffff26 64%, #0000 65%) top right/50%
+      50%,
+    conic-gradient(from -45deg at 50% 85.5%, #ffffff26 90deg, #0000 0)
+      bottom/100% 50%;
+  background-repeat: no-repeat;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 0.3s ease all;
+  z-index: -1;
+}
+
+@media (min-width: 650px) {
+  .heart::before {
+    width: 150px;
+  }
+}
+
+.heart:hover,
+.heart:active,
+.heart:focus {
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  color: var(--heart-text);
+}
+
+.heart:hover::before,
+.heart:active::before,
+.heart:focus::before {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.heart-text {
+  transform: translateY(-10px);
+  display: block;
+  color: var(--heart-text);
+  font-size: 1.5rem;
+  font-family: var(--letter-font);
+}
+
+.envelope.active * {
+  pointer-events: none;
+}
+
+.envelope.active .envelope-flap {
+  transform: rotateX(-180deg) translateY(0);
+  perspective: 10px;
+}
+
+.envelope.active .envelope-flap::before {
+  box-shadow: inset 0 0 30px -5px var(--envelope-shadow);
+}
+
+.envelope.active .heart {
+  display: none;
+}
+
+.letter {
+  box-sizing: border-box;
+  font-family: var(--letter-font);
+  font-size: 1rem;
+  line-height: 1.1;
+  background-color: var(--letter-bg);
+  color: var(--letter-text);
+  width: var(--letter-x);
+  height: var(--letter-y);
+  user-select: none;
+  box-shadow: inset 0 0 20px -5px var(--letter-shadow);
+  padding: 3rem 1rem 1rem;
+  margin: 0;
+  cursor: grab;
+  position: absolute;
+  top: 1rem;
+  overflow: auto;
+  text-align: center;
+  border: 0;
+}
+
+.letter:active {
+  cursor: grabbing;
+}
+
+.letter.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.letter cite {
+  font-size: 1.25rem;
+  color: var(--letter-text);
+  margin-top: 1rem;
+}
+
+.letter cite::before {
+  content: none;
+}
+
+.letter:nth-child(even) {
+  transform: skew(-2deg) translateY(-4px);
+}
+
+.letter:nth-child(odd) {
+  transform: skew(2deg) translateY(4px);
+}
+
+@media (min-width: 650px) {
+  .letter {
+    font-size: 1.3rem;
+  }
+}
+
+.closeLetter {
+  font-size: 0 !important;
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border: 0;
+}
+
+.closeLetter::before {
+  content: "˚ʚ❤︎ɞ˚";
+  font-size: 1.5rem !important;
+  font-family: var(--letter-font);
+  color: var(--letter-button-text);
+  text-align: center;
+}
+
+.closeLetter:hover,
+.closeLetter:active,
+.closeLetter:focus {
+  background-color: transparent;
+  color: var(--letter-text);
+  transform: translateX(-50%);
+  padding: 0;
+  margin: 0;
+}
+
+.closeLetter:hover::before,
+.closeLetter:active::before,
+.closeLetter:focus::before {
+  content: "xXx";
+}
+
+:root {
+  --bodybg: darkred;
+}
+
+footer {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 10000000;
+}
+
+footer svg {
+  width: 100px;
+}
+/* Falling hearts */
+    .falling-heart {
+      position: absolute;
+      top: -50px;
+      font-size: 30px;
+      color: red;
+      animation: fall linear forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Music toggle button */
+    #musicToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      font-size: 16px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 20;
+    }
+    .back-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background: #e60000;
+    }
+</style>
+</head>
+<section class="cssletter">
+  <div class="envelope">
+    <button class="heart" id="openEnvelope" aria-label="Open Envelope">
+      <span class="heart-text">Open</span>
+    </button>
+    <div class="envelope-flap"></div>
+    <div class="envelope-folds">
+      <div class="envelope-left"></div>
+      <div class="envelope-right"></div>
+      <div class="envelope-bottom"></div>
+    </div>
+  </div>
+  <div class="letters">
+
+    <blockquote class="letter center" id="1" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Amelia's letter">Close Amelia's letter</button>
+      <p>From the moment our paths intertwined, you filled my days with laughter and my nights with sweet dreams. Your love is a constant melody that plays softly in my heart, making every moment magical.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="2" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Oliver's letter">Close Oliver's letter</button>
+      <p>Every shared glance and whispered secret adds another verse to our endless love song. You make even the simplest moments sparkle with joy and wonder, as if we’re living in our very own romantic film.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="3" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Isabella's letter">Close Isabella's letter</button>
+      <p>In your arms, I find both comfort and adventure. You are the calm in my storm and the spark that ignites my passion, turning every day into a delightful escapade full of surprises.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="4" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close William's letter">Close William's letter</button>
+      <p>Your love is as sweet as a box of chocolates and as playful as a cheeky wink. With you, life is a joyful celebration of every little delight—and a few silly moments that make me grin from ear to ear.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="5" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Charlotte's letter">Close Charlotte's letter</button>
+      <p>Every day with you feels like a page from a romantic novel, where laughter, tender moments, and unexpected surprises blend into a story I never want to end. I cherish our every adventure together.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="6" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Henry's letter">Close Henry's letter</button>
+      <p>Your heart is the cosy haven where mine finds solace. Together, we create a whimsical world where every silly moment is treasured and every loving gesture becomes a masterpiece.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="7" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Sophia's letter">Close Sophia's letter</button>
+      <p>I love the way you light up my life like a burst of glitter on a gloomy day. Your quirky humour and boundless affection make every moment feel like a special celebration.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="8" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close James's letter">Close James's letter</button>
+      <p>Your love is like a warm embrace on a chilly day—a constant reminder that home is wherever we are together. I am forever grateful for your tender care and kind heart.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="9" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Victoria's letter">Close Victoria's letter</button>
+      <p>Every beat of my heart sings a serenade for you, celebrating a love that is as deep as the ocean and as whimsical as a fairytale. Life with you is simply enchanting.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="10" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Edward's letter">Close Edward's letter</button>
+      <p>With you, even the most ordinary moment transforms into an extraordinary memory. Your laughter is the music that fills my soul with endless delight and wonder.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="11" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Alice's letter">Close Alice's letter</button>
+      <p>You are the spark that brightens my darkest days and the gentle whisper that soothes my restless nights. Our love is a beautiful blend of passion, tenderness, and a touch of playful mischief.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="12" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Freya's letter">Close Freya's letter</button>
+      <p>In a world that often feels chaotic, your love is my sanctuary. Your silly jokes and heartfelt hugs remind me every day that life is a precious adventure worth celebrating.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="13" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Noah's letter">Close Noah's letter</button>
+      <p>Every moment spent with you is a delightful mixture of sweet romance and light-hearted fun. I treasure every shared smile and every spontaneous burst of laughter we enjoy.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="14" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Grace's letter">Close Grace's letter</button>
+      <p>The magic in your eyes outshines the stars, and your laughter is a symphony that brightens even the dullest days. I adore you beyond what words can capture.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="15" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Samuel's letter">Close Samuel's letter</button>
+      <p>With every shared smile and every gentle caress, you remind me that love can be both profoundly tender and wonderfully silly. Thank you for being my endless source of joy.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="16" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Ivy's letter">Close Ivy's letter</button>
+      <p>You are the whimsical spark that turns every mundane moment into a celebration of laughter and love. Our bond feels like an enchanting midnight dance under a silver moon.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="17" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Alexander's letter">Close Alexander's letter</button>
+      <p>Every whispered secret and shared giggle weaves the tapestry of our extraordinary love story. I remain utterly smitten by your charm and playful spirit.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="18" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Rose's letter">Close Rose's letter</button>
+      <p>Your love is a gentle breeze on a summer’s day, reminding me that even the smallest moments can be filled with magic and wonder. I adore you more than words can say.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="19" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Lucas's letter">Close Lucas's letter</button>
+      <p>In your embrace, I find both a safe haven and a thrilling adventure. Your laughter, full of light and mischief, makes my heart soar with happiness every single day.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="20" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Elise's letter">Close Elise's letter</button>
+      <p>Our love is a blend of deep affection and cheeky humour—a unique cocktail that brightens my days and warms my nights. I’m madly in love with every quirky bit of you.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="21" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Julian's letter">Close Julian's letter</button>
+      <p>Every day with you is a celebration of love, laughter, and the delightful surprises that make life so extraordinary. You truly are my favourite person—both silly and sweet.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+    <blockquote class="letter center" id="22" tabindex="0" style="left: 390px;">
+      <button class="closeLetter" title="Close Elena's letter">Close Elena's letter</button>
+      <p>With every beat of my heart, I fall deeper in love with you—treasuring every silly smile and tender moment. You are my forever valentine, and I will cherish you always.</p>
+      <cite>Guariña Jacob</cite>
+    </blockquote>
+
+  </div>
+</section>
+  <!-- Background Music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="looper1.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Music Toggle Button -->
+  <button id="musicToggle" onclick="toggleMusic()">🔊 Toggle Music</button>
+  
+	<!-- Back button -->
+    <button class="back-button" onclick="window.location.href='gallery.html'">Back to gallery</button>
+<Script>
+const letters = document.querySelectorAll(".letter");
+const lettersContainer = document.querySelector(".letters");
+let zIndexCounter = 10;
+
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+};
+
+const shuffledThings = Array.from(letters);
+shuffleArray(shuffledThings);
+
+shuffledThings.forEach((letter) => {
+  lettersContainer.appendChild(letter);
+  const center = document.querySelector(".cssletter").offsetWidth / 2 - letter.offsetWidth / 2;
+  letter.style.left = `${center}px`;
+
+  function isOverflown(element) {
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+  }
+
+  if (!isOverflown(letter)) {
+    letter.classList.add("center");
+  }
+  let offsetX, offsetY;
+  letter.addEventListener("mousedown", (e) => {
+    if (e.target.tagName !== "BUTTON") {
+      const rect = e.target.getBoundingClientRect();
+
+      letter.style.position = "fixed";
+      letter.style.left = `${rect.left}px`;
+      letter.style.top = `${rect.top}px`;
+
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      letter.style.zIndex = zIndexCounter++;
+      const moveAt = (posX, posY) => {
+        letter.style.left = `${posX - offsetX}px`;
+        letter.style.top = `${posY - offsetY}px`;
+      };
+      const onMouseMove = (moveEvent) => moveAt(moveEvent.clientX, moveEvent.clientY);
+      const onMouseUp = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    }
+  });
+});
+document.querySelector("#openEnvelope").addEventListener("click", () => {
+  document.querySelector(".envelope").classList.add("active");
+});
+const closeButtons = document.querySelectorAll(".closeLetter");
+closeButtons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+    const letter = e.target.closest(".letter");
+    if (letter) {
+      letter.style.display = "none";
+    }
+  });
+});
+    // Falling hearts logic
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("falling-heart");
+      heart.innerText = "❤️";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      const duration = 3 + Math.random() * 5;
+      heart.style.animationDuration = duration + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => { heart.remove(); }, duration * 1000);
+    }
+    setInterval(createHeart, 500);
+
+    // Music toggle
+    function toggleMusic() {
+      const music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+</Script>
+
+
